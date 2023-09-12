@@ -5,37 +5,43 @@ cd /
 ```
 
 ## Create a topic
+Command:
 ```shell
 bin/kafka-topics --bootstrap-server <kafka-broker-host> --topic <topic-name> --create
 ```
 
-e.g.
+E.g. create the first topic.
 ```shell
 bin/kafka-topics --bootstrap-server 127.0.0.1:9092 --topic first_topic --create
 ```
 
 # Producer
-## Produce a message
+Command:
 ```shell
 bin/kafka-console-producer --bootstrap-server <kafka-broker-host> --topic <topic-name>
 ```
 
-e.g.
+E.g. produce some messages.
 ```shell
 bin/kafka-console-producer --bootstrap-server localhost:9092 --topic first_topic
-# Input a message in shell
 ```
+
+Then type in some message in the console. 
 
 
 # Consumer
-## Produce a message
+Command:
 ```shell
 bin/kafka-console-consumer --bootstrap-server <kafka-broker-host> --topic <topic-name>
 ```
 
-e.g.
+E.g. Consume messages
 ```shell
 bin/kafka-console-consumer --bootstrap-server localhost:9092 --topic first_topic
 ```
 
+E.g. Consume messages from the very beginning
+```shell
+bin/kafka-console-consumer --bootstrap-server localhost:9092 --topic first_topic --from-beginning
+```
 

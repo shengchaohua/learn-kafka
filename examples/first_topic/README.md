@@ -1,7 +1,7 @@
 # Start kafka
 Use single-node kafka.
 
-Always run bash cmd under the root path of $RROJECT. 
+Run the following cmd under the root path of $RROJECT. 
 ```shell
 cd guide/install-kafka-single-node
 docker-compose up -d
@@ -24,4 +24,20 @@ $ bin/kafka-topics --bootstrap-server 127.0.0.1:9092 --topic first_topic --creat
 ```shell
 $ bin/kafka-topics --bootstrap-server 127.0.0.1:9092 --list
 first_topic
+```
+
+## Produce and consume message through sarama client
+Find this example:
+```shell
+cd examples/first_topic
+```
+
+Start the consumer:
+```shell
+go run consumer/main.go
+```
+
+Start the producer:
+```shell
+go run producer/main.go
 ```
