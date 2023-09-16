@@ -18,7 +18,8 @@ func main() {
 	config.Producer.RequiredAcks = sarama.WaitForLocal       // 等待 Leader 发送成功
 	config.Producer.Compression = sarama.CompressionSnappy   // 使用 Snappy 压缩
 	config.Producer.Flush.Frequency = 500 * time.Millisecond // 定期刷新
-	config.Producer.Return.Successes = true
+	config.Producer.Return.Successes = true                  // 文档要求
+	config.Producer.Return.Errors = true                     // 文档要求
 
 	producer, err := sarama.NewSyncProducer([]string{broker}, config)
 	if err != nil {

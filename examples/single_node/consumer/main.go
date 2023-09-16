@@ -16,7 +16,7 @@ func main() {
 	topic := conf.FirstTopic
 
 	config := sarama.NewConfig()
-	// config.Consumer.Offsets.Initial = sarama.OffsetNewest // 从最新的偏移量开始消费，增量消费
+	// conf.Consumer.Offsets.Initial = sarama.OffsetNewest // 从最新的偏移量开始消费，增量消费
 	config.Consumer.Offsets.Initial = sarama.OffsetOldest // 从最早的偏移量开始消费
 
 	consumer, err := sarama.NewConsumer([]string{broker}, config)

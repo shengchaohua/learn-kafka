@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
+	"os/signal"
 	"time"
 
 	"github.com/IBM/sarama"
@@ -18,6 +20,8 @@ func main() {
 	config.Producer.RequiredAcks = sarama.WaitForLocal       // 等待 Leader 发送成功
 	config.Producer.Compression = sarama.CompressionSnappy   // 使用 Snappy 压缩
 	config.Producer.Flush.Frequency = 500 * time.Millisecond // 定期刷新
+	config.Producer.Return.Successes = true                  // if true, must read Successes channel
+	config.Producer.Return.Errors = true                     // default enabled, must read Errors channel
 
 	producer, err := sarama.NewAsyncProducer([]string{broker}, config)
 	if err != nil {
@@ -30,16 +34,35 @@ func main() {
 		}
 	}()
 
-	for i := 0; i < 10; i++ {
-		message := &sarama.ProducerMessage{
-			Topic: topic,
-			Value: sarama.StringEncoder(fmt.Sprintf("Message %d", i)),
+	signals := make(chan os.Signal, 1)
+	signal.Notify(signals, os.Interrupt)
+
+	go func() {
+		for i := 0; ; {
+			message := &sarama.ProducerMessage{
+				Topic: topic,
+				Value: sarama.StringEncoder(fmt.Sprintf("Message %d", i)),
+			}
+
+			select {
+			case producer.Input() <- message:
+				i++
+				log.Printf("Produced message: %s", message.Value)
+			case successMsg := <-producer.Successes():
+				log.Printf("Producer success: %v", successMsg)
+				fmt.Println("== topic:", successMsg.Topic)
+				fmt.Println("== value:", successMsg.Value)
+				fmt.Println("== partition:", successMsg.Partition)
+				fmt.Println("== offset:", successMsg.Offset)
+			case err := <-producer.Errors():
+				log.Printf("Producer error: %v", err)
+			case <-signals:
+				return
+			}
+			time.Sleep(1 * time.Second)
 		}
+	}()
 
-		producer.Input() <- message
-		log.Printf("Produced message: %s", message.Value)
-		time.Sleep(1 * time.Second)
-	}
-
-	log.Println("END")
+	<-signals
+	log.Println("Signal interrupt.")
 }
