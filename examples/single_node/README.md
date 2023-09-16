@@ -26,18 +26,21 @@ $ bin/kafka-topics --bootstrap-server 127.0.0.1:9092 --list
 first_topic
 ```
 
-## Produce and consume message through sarama client
-Find this example:
+## Producer
+### Async producer:
+Start producer:
 ```shell
-cd examples/first_topic
+go run async_producer/main.go
 ```
 
-Start the consumer:
+### Sync producer
+Start producer
+```shell
+go run sync_producer/main.go
+```
+
+## Consumer
+Start consumer:
 ```shell
 go run consumer/main.go
-```
-
-Start the producer:
-```shell
-go run producer/main.go
 ```

@@ -8,7 +8,7 @@ import (
 
 	"github.com/IBM/sarama"
 
-	"learn-kafka/examples/first_topic/conf"
+	"learn-kafka/examples/single_node/conf"
 )
 
 func main() {
@@ -33,7 +33,7 @@ func main() {
 	signals := make(chan os.Signal, 1)
 	signal.Notify(signals, os.Interrupt)
 
-	consumerPartition, err := consumer.ConsumePartition(topic, 0, 10)
+	consumerPartition, err := consumer.ConsumePartition(topic, 0, 0)
 	if err != nil {
 		log.Fatalf("Error from consumer: %v", err)
 	}
@@ -55,16 +55,4 @@ func main() {
 
 	<-signals
 	log.Println("Signal interrupt.")
-}
-
-type ConsumerHandler struct{}
-
-func (h *ConsumerHandler) Setup(_ sarama.ConsumerGroupSession) error   { return nil }
-func (h *ConsumerHandler) Cleanup(_ sarama.ConsumerGroupSession) error { return nil }
-func (h *ConsumerHandler) ConsumeClaim(session sarama.ConsumerGroupSession, claim sarama.ConsumerGroupClaim) error {
-	for message := range claim.Messages() {
-		fmt.Printf("Consumed message: %s\n", message.Value)
-		session.MarkMessage(message, "")
-	}
-	return nil
 }

@@ -18,12 +18,12 @@ bin/kafka-topics --bootstrap-server 127.0.0.1:9092 --topic first_topic --create
 # Producer
 Command:
 ```shell
-bin/kafka-console-producer --bootstrap-server <kafka-broker-host> --topic <topic-name>
+bin/kafka-console-async_producer --bootstrap-server <kafka-broker-host> --topic <topic-name>
 ```
 
 E.g. produce some messages.
 ```shell
-bin/kafka-console-producer --bootstrap-server localhost:9092 --topic first_topic
+bin/kafka-console-async_producer --bootstrap-server localhost:9092 --topic first_topic
 ```
 
 Then type in some message in the console. 
