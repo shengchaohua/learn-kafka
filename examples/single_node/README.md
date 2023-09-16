@@ -1,10 +1,16 @@
 # Start kafka
 Use single-node kafka.
 
-Run the following cmd under the root path of $RROJECT. 
+Start kafka broker:
 ```shell
 cd guide/install-kafka-single-node
 docker-compose up -d
+```
+
+Stop kafka broker:
+```shell
+cd guide/install-kafka-single-node
+docker-compose stop
 ```
 
 # Create topic

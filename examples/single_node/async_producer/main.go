@@ -37,32 +37,33 @@ func main() {
 	signals := make(chan os.Signal, 1)
 	signal.Notify(signals, os.Interrupt)
 
-	go func() {
-		for i := 0; ; {
-			message := &sarama.ProducerMessage{
-				Topic: topic,
-				Value: sarama.StringEncoder(fmt.Sprintf("Message %d", i)),
-			}
+	log.Println("Producer starts. Press CTRL+C to exit.")
 
-			select {
-			case producer.Input() <- message:
-				i++
-				log.Printf("Produced message: %s", message.Value)
-			case successMsg := <-producer.Successes():
-				log.Printf("Producer success: %v", successMsg)
-				fmt.Println("== topic:", successMsg.Topic)
-				fmt.Println("== value:", successMsg.Value)
-				fmt.Println("== partition:", successMsg.Partition)
-				fmt.Println("== offset:", successMsg.Offset)
-			case err := <-producer.Errors():
-				log.Printf("Producer error: %v", err)
-			case <-signals:
-				return
-			}
-			time.Sleep(1 * time.Second)
+outer:
+	for i := 0; ; {
+		message := &sarama.ProducerMessage{
+			Topic: topic,
+			Value: sarama.StringEncoder(fmt.Sprintf("Message %d", i)),
 		}
-	}()
 
-	<-signals
-	log.Println("Signal interrupt.")
+		select {
+		case producer.Input() <- message:
+			i++
+			log.Printf("Produced message: %s", message.Value)
+		case successMsg := <-producer.Successes():
+			log.Printf("Producer success: %v", successMsg)
+			fmt.Println("== topic:", successMsg.Topic)
+			fmt.Println("== value:", successMsg.Value)
+			fmt.Println("== partition:", successMsg.Partition)
+			fmt.Println("== offset:", successMsg.Offset)
+		case err := <-producer.Errors():
+			log.Printf("Producer error: %v", err)
+		case <-signals:
+			log.Println("Signal interrupt.")
+			break outer
+		}
+		time.Sleep(1 * time.Second)
+	}
+
+	return
 }
