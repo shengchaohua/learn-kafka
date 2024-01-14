@@ -1,7 +1,6 @@
 package org.example.kafka.producer;
 
 import org.apache.kafka.clients.producer.*;
-import org.apache.kafka.clients.producer.internals.Sender;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.example.kafka.KafkaConfig;
 
