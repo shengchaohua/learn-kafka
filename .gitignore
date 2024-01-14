@@ -8,13 +8,16 @@
 *.so
 *.dylib
 
+# System
+.DS_Store
+
 # Project
 .idea
 
-# Test binary, built with `go test -c`
+# Test binary, built with `learn-kafka-go test -c`
 *.test
 
-# Output of the go coverage tool, specifically when used with LiteIDE
+# Output of the learn-kafka-go coverage tool, specifically when used with LiteIDE
 *.out
 
 # Dependency directories (remove the comment below to include it)

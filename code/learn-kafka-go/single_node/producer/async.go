@@ -9,10 +9,10 @@ import (
 
 	"github.com/IBM/sarama"
 
-	"learn-kafka/examples/single_node/conf"
+	"learn-kafka-go/single_node/conf"
 )
 
-func main() {
+func AsyncProducer() {
 	broker := conf.KafkaHost
 	topic := conf.FirstTopic
 

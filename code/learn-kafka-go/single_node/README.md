@@ -3,13 +3,13 @@ Use single-node kafka.
 
 Start kafka broker:
 ```shell
-cd guide/install-kafka-single-node
+cd install/single-node
 docker-compose up -d
 ```
 
 Stop kafka broker:
 ```shell
-cd guide/install-kafka-single-node
+cd install/single-node
 docker-compose stop
 ```
 
@@ -36,17 +36,17 @@ first_topic
 ### Async producer:
 Start producer:
 ```shell
-go run async_producer/main.go
+learn-kafka-go run async_producer/main.learn-kafka-go
 ```
 
 ### Sync producer
 Start producer
 ```shell
-go run sync_producer/main.go
+learn-kafka-go run producer/main.learn-kafka-go
 ```
 
 ## Consumer
 Start consumer:
 ```shell
-go run consumer/main.go
+learn-kafka-go run consumer/main.learn-kafka-go
 ```

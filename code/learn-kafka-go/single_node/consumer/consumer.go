@@ -1,17 +1,16 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"os/signal"
 
 	"github.com/IBM/sarama"
 
-	"learn-kafka/examples/single_node/conf"
+	"learn-kafka-go/single_node/conf"
 )
 
-func main() {
+func Consumer() {
 	broker := conf.KafkaHost
 	topic := conf.FirstTopic
 
@@ -43,10 +42,10 @@ func main() {
 			select {
 			case message := <-consumerPartition.Messages():
 				log.Printf("Consume message:")
-				fmt.Println("== topic:", message.Topic)
-				fmt.Println("== value:", string(message.Value))
-				fmt.Println("== partition:", message.Partition)
-				fmt.Println("== offset:", message.Offset)
+				log.Print("== topic:", message.Topic)
+				log.Print("== value:", string(message.Value))
+				log.Print("== partition:", message.Partition)
+				log.Print("== offset:", message.Offset)
 			case err := <-consumerPartition.Errors():
 				log.Println(err)
 			}
