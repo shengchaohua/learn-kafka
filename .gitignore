@@ -26,3 +26,8 @@
 # Go workspace file
 go.work*
 vendor
+
+# Custom
+.go/
+.java/
+.python/
